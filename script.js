@@ -4,6 +4,17 @@ var canvasElement = document.getElementById("myCanvas");
 var filledFields = [];
 var playerId = 1;
 
+var winningPairs = [
+    [{r:0,c:0},{r:0,c:1},{r:0,c:2}],
+    [{r:1,c:0},{r:1,c:1},{r:1,c:2}],
+    [{r:2,c:0},{r:2,c:1},{r:2,c:2}],
+    [{r:0,c:0},{r:1,c:0},{r:2,c:0}],
+    [{r:0,c:1},{r:1,c:1},{r:2,c:1}],
+    [{r:0,c:2},{r:1,c:2},{r:2,c:2}],
+    [{r:0,c:0},{r:1,c:1},{r:2,c:2}],
+    [{r:2,c:0},{r:1,c:1},{r:0,c:2}]
+];
+
 drawX = function (x, y) {
 
     var context = canvasElement.getContext("2d");
@@ -14,6 +25,7 @@ drawX = function (x, y) {
     context.moveTo(x + 200 - padding, y + padding);
     context.lineTo(x + padding, y + 200 - padding);
     context.lineWidth = 5;
+    context.strokeStyle = "black";
     context.stroke();
 }
 
@@ -28,6 +40,7 @@ drawO = function (x, y) {
     console.log(centerX, centerY)
     context.arc(centerX, centerY, padding, 0, 2 * Math.PI);
     context.lineWidth = 5;
+    context.strokeStyle = "red";
     context.stroke();
 
 }
@@ -49,7 +62,7 @@ objField = function (width, height, boxSize) {
     context.beginPath();
     context.moveTo(0,0);
     context.lineWidth = "6";
-    context.strokeStyle = "red";
+    context.strokeStyle = "blue";
     //context.rect(0, 0, 700, 700);
     context.stroke();
 
@@ -57,7 +70,7 @@ objField = function (width, height, boxSize) {
         for (j = 0; j < 3; j++) {
             context.beginPath();
             context.lineWidth = 6;
-            context.strokeStyle = "red";
+            context.strokeStyle = "blue";
             context.rect(i * boxSize, j * boxSize, boxSize, boxSize);
             context.stroke();
         }
@@ -90,7 +103,7 @@ canvasElement.addEventListener('mousedown', function (e) {
 
 })
 canvasElement.addEventListener("mouseup", function (e) {
-    if(filledFields.length>=4) {
+    if(filledFields.length>=5) {
         var obj = filledFields[filledFields.length-1][1];
         if(obj instanceof objO) {
 
@@ -99,6 +112,7 @@ canvasElement.addEventListener("mouseup", function (e) {
 });
 function getMousePos(canvas, evt) {
     var rect = canvas.getBoundingClientRect();
+    console.log(evt.clientX - rect.left,evt.clientY - rect.top)
     return {
         x: evt.clientX - rect.left,
         y: evt.clientY - rect.top
